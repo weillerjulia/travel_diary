@@ -17,6 +17,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
   late String title;
   late String location;
   late String description;
+  int rating = 0; // Adiciona um campo para a avaliação
 
   // Crie uma instância do FirestoreService
   final FirestoreService firestoreService = FirestoreService();
@@ -27,13 +28,14 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
     title = widget.entry?.title ?? '';
     location = widget.entry?.location ?? '';
     description = widget.entry?.description ?? '';
+    rating = widget.entry?.rating ?? 0; // Se houver uma avaliação anterior
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.entry == null ? 'Adicionar Entrada' : 'Editar Entrada'),
+        title: Text(widget.entry == null ? 'Compartilhe as suas memórias' : 'Editar informações'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -45,16 +47,52 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                 initialValue: title,
                 decoration: InputDecoration(labelText: 'Título'),
                 onSaved: (val) => title = val!,
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return 'Título é obrigatório';
+                  }
+                  return null; // Retorna null se a validação passar
+                },
               ),
               TextFormField(
                 initialValue: location,
-                decoration: InputDecoration(labelText: 'Localização'),
+                decoration: InputDecoration(labelText: 'Local visitado'),
                 onSaved: (val) => location = val!,
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return 'Local é obrigatório';
+                  }
+                  return null; // Retorna null se a validação passar
+                },
               ),
               TextFormField(
                 initialValue: description,
-                decoration: InputDecoration(labelText: 'Descrição'),
+                decoration: InputDecoration(labelText: 'Descrição da experiência'),
                 onSaved: (val) => description = val!,
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return 'Descrição é obrigatória';
+                  }
+                  return null; // Retorna null se a validação passar
+                },
+              ),
+              SizedBox(height: 20),
+              Text('Avaliação:'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(5, (index) {
+                  return IconButton(
+                    icon: Icon(
+                      index < rating ? Icons.star : Icons.star_border,
+                      color: Colors.yellow,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        rating = index + 1; // A avaliação vai de 1 a 5
+                      });
+                    },
+                  );
+                }),
               ),
               SizedBox(height: 20),
               ElevatedButton(
@@ -66,6 +104,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                       title: title,
                       location: location,
                       description: description,
+                      rating: rating, // Adiciona a avaliação ao objeto TravelDiary
                     );
                     // Adiciona ou atualiza a entrada sem usar o provider
                     if (widget.entry == null) {

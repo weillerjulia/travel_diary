@@ -36,8 +36,8 @@ class DiaryEntryDetail extends StatelessWidget {
               final shouldDelete = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Excluir Entrada'),
-                  content: Text('Tem certeza de que deseja excluir esta entrada?'),
+                  title: Text('Excluir informações'),
+                  content: Text('Tem certeza de que deseja excluir?'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
