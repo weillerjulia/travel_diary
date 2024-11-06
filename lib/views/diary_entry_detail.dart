@@ -10,17 +10,16 @@ class DiaryEntryDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirestoreService firestoreService = FirestoreService(); // Instância do FirestoreService
+    final FirestoreService firestoreService = FirestoreService();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(entry.title),
-        backgroundColor: Color(0xFFF0D901), // Cor de fundo do AppBar
+        title: null, // Remover o título
+        backgroundColor: Color(0xFFDDB7AC),
         actions: [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
-              // Navega para a tela de edição, passando a entrada atual
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -32,7 +31,6 @@ class DiaryEntryDetail extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete, color: Colors.white),
             onPressed: () async {
-              // Confirmar exclusão
               final shouldDelete = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -51,8 +49,7 @@ class DiaryEntryDetail extends StatelessWidget {
                 ),
               );
               if (shouldDelete ?? false) {
-                // Exclui a entrada e volta para a lista
-                await firestoreService.deleteDiaryEntry(entry.id!); // Chama o método diretamente
+                await firestoreService.deleteDiaryEntry(entry.id!);
                 Navigator.pop(context);
               }
             },
@@ -61,33 +58,37 @@ class DiaryEntryDetail extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView( // Permite rolagem se o conteúdo for longo
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 entry.title,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF5060FF)), // Cor do título
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF050505),
+                ),
               ),
               SizedBox(height: 8),
               Text(
                 entry.location,
-                style: TextStyle(fontSize: 18, color: Color(0xFF999B85)), // Cor do local
+                style: TextStyle(fontSize: 18, color: Color(0xFF999B85)),
               ),
               SizedBox(height: 16),
               Text(
                 entry.description,
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 20), // Espaçamento adicional
-              Divider(color: Color(0xFFDDB7AC)), // Divisória
-              SizedBox(height: 20), // Espaçamento adicional
+              SizedBox(height: 20),
+              Divider(color: Color(0xFFDDB7AC)),
+              SizedBox(height: 20),
               Text('Avaliação:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
                     index < entry.rating ? Icons.star : Icons.star_border,
-                    color: Colors.yellow,
+                    color: Color(0xFF999B85),
                   );
                 }),
               ),

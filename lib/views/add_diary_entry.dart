@@ -53,7 +53,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.entry == null ? 'Compartilhe as suas memórias' : 'Editar informações'),
-        backgroundColor: Color(0xFFF0D901), // Cor de fundo do AppBar
+        backgroundColor: Color(0xFFDDB7AC), // Cor de fundo do AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -127,7 +127,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                     return IconButton(
                       icon: Icon(
                         index < rating ? Icons.star : Icons.star_border,
-                        color: Colors.yellow,
+                          color: Color(0xFF999B85),
                       ),
                       onPressed: () {
                         setState(() {
